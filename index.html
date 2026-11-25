@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zhangshuai Hou (侯章帅) — Geochronology, Stratigraphy &amp; Paleogeography</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      --bg-canvas: #FAF8F4;
+      --bg-panel: #F3EFE6;
+      --ink-primary: #1C2321;
+      --ink-muted: #525B58;
+      --accent-strata: #B85D3B;
+      --accent-slate: #2D5A5E;
+      --border-hair: #DDD6C8;
+    }
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--ink-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-editorial {
+      font-family: Georgia, 'Times New Roman', 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+    }
+    .font-mono-geo {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    .strata-rule {
+      height: 3px;
+      background: linear-gradient(90deg, #B85D3B 0%, #B85D3B 28%, #2D5A5E 28%, #2D5A5E 62%, #D4A373 62%, #D4A373 100%);
+    }
+    .gallery-card img {
+      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .gallery-card:hover img {
+      transform: scale(1.04);
+    }
+    .nav-active {
+      color: var(--accent-strata);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-[#B85D3B]/20 selection:text-[#1C2321]">
+
+  <!-- Top Navigation -->
+  <header class="sticky top-0 z-40 bg-[#FAF8F4]/92 backdrop-blur-md border-b border-[#DDD6C8]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="#top" class="flex items-center gap-3 group min-w-0">
+        <span class="w-8 h-8 rounded bg-[#1C2321] text-[#FAF8F4] font-editorial font-bold text-sm flex items-center justify-center shrink-0 tracking-wider group-hover:bg-[#B85D3B] transition-colors">ZH</span>
+        <div class="truncate">
+          <span class="font-editorial font-semibold text-base tracking-tight text-[#1C2321]" data-i18n="brandName">Zhangshuai Hou</span>
+          <span class="hidden sm:inline text-xs text-[#525B58] ml-2 font-mono-geo" data-i18n="brandTag">NJU · Geochronology</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-[#525B58]">
+        <a href="#about" class="hover:text-[#B85D3B] transition-colors" data-i18n="navAbout">About</a>
+        <a href="#fieldwork" class="hover:text-[#B85D3B] transition-colors font-semibold text-[#1C2321]" data-i18n="navFieldwork">Fieldwork</a>
+        <a href="#research" class="hover:text-[#B85D3B] transition-colors" data-i18n="navResearch">Research</a>
+        <a href="#publications" class="hover:text-[#B85D3B] transition-colors" data-i18n="navPublications">Publications</a>
+        <a href="#cv" class="hover:text-[#B85D3B] transition-colors" data-i18n="navCV">Timeline</a>
+        <a href="#contact" class="hover:text-[#B85D3B] transition-colors" data-i18n="navContact">Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <div class="inline-flex rounded-full border border-[#DDD6C8] bg-[#F3EFE6] p-0.5 text-xs font-medium" role="group" aria-label="Language toggle">
+          <button id="langEnBtn" type="button" class="px-2.5 py-1 rounded-full transition-colors bg-[#1C2321] text-[#FAF8F4]">EN</button>
+          <button id="langZhBtn" type="button" class="px-2.5 py-1 rounded-full transition-colors text-[#525B58] hover:text-[#1C2321]">中文</button>
+        </div>
+        <button id="mobileMenuBtn" type="button" class="md:hidden p-2 rounded-lg border border-[#DDD6C8] text-[#1C2321] hover:bg-[#F3EFE6]" aria-label="Toggle menu">
+          <i data-lucide="menu" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobileMenu" class="hidden md:hidden border-t border-[#DDD6C8] bg-[#FAF8F4] px-4 py-3 space-y-2 text-sm">
+      <a href="#about" class="block py-1.5 text-[#525B58] hover:text-[#B85D3B]" data-i18n="navAbout">About</a>
+      <a href="#fieldwork" class="block py-1.5 font-semibold text-[#1C2321] hover:text-[#B85D3B]" data-i18n="navFieldwork">Fieldwork</a>
+      <a href="#research" class="block py-1.5 text-[#525B58] hover:text-[#B85D3B]" data-i18n="navResearch">Research</a>
+      <a href="#publications" class="block py-1.5 text-[#525B58] hover:text-[#B85D3B]" data-i18n="navPublications">Publications</a>
+      <a href="#cv" class="block py-1.5 text-[#525B58] hover:text-[#B85D3B]" data-i18n="navCV">Timeline</a>
+      <a href="#contact" class="block py-1.5 text-[#525B58] hover:text-[#B85D3B]" data-i18n="navContact">Contact</a>
+    </div>
+  </header>
+
+  <main id="top" class="flex-1">
+
+    <!-- Editorial Hero Banner -->
+    <section class="relative overflow-hidden border-b border-[#DDD6C8]">
+      <div class="relative h-[340px] sm:h-[420px] w-full bg-[#1C2321]">
+        <img src="images/junggar.jpg" alt="Permian sedimentary strata in the Junggar Basin, Xinjiang" class="w-full h-full object-cover object-center opacity-85" />
+        <div class="absolute inset-0 bg-gradient-to-t from-[#1C2321] via-[#1C2321]/55 to-[#1C2321]/20"></div>
+        <div class="absolute inset-0 flex items-end">
+          <div class="max-w-6xl w-full mx-auto px-4 sm:px-6 pb-8 sm:pb-12">
+            <div class="flex flex-col sm:flex-row sm:items-end gap-6">
+              <!-- Clean Editorial Monogram / Uploadable Portrait Slot (No AI Portrait) -->
+              <div class="relative shrink-0">
+                <div id="portraitFrame" class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl border-2 border-[#FAF8F4]/80 bg-[#2D5A5E] text-[#FAF8F4] flex flex-col items-center justify-center shadow-lg overflow-hidden">
+                  <span class="font-editorial text-3xl font-bold tracking-wider">ZH</span>
+                  <span class="text-[10px] uppercase tracking-widest opacity-80 mt-0.5 font-mono-geo">侯章帅</span>
+                </div>
+                <label for="portraitInput" class="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-[#FAF8F4] text-[#1C2321] border border-[#DDD6C8] shadow flex items-center justify-center cursor-pointer hover:bg-[#B85D3B] hover:text-white transition-colors" title="Upload your portrait photo">
+                  <i data-lucide="camera" class="w-3.5 h-3.5"></i>
+                </label>
+                <input id="portraitInput" type="file" accept="image/*" class="hidden" />
+              </div>
+
+              <div class="text-[#FAF8F4] flex-1 min-w-0">
+                <p class="font-mono-geo text-xs uppercase tracking-[0.2em] text-[#E8C5A5] mb-2" data-i18n="heroKicker">Carboniferous–Permian Geochronology · Stratigraphy · Paleogeography</p>
+                <h1 class="font-editorial text-3xl sm:text-5xl font-bold tracking-tight leading-tight">
+                  <span data-i18n="heroName">Zhangshuai Hou</span>
+                  <span class="font-normal text-[#DDD6C8] text-2xl sm:text-3xl ml-2" data-i18n="heroNameSub">侯章帅</span>
+                </h1>
+                <p class="mt-2 text-sm sm:text-base text-[#E6E1D6] max-w-2xl" data-i18n="heroAffil">
+                  Postdoctoral Researcher, State Key Laboratory of Critical Earth Material Cycling and Mineral Deposits, School of Earth Sciences and Engineering, Nanjing University
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action & Verified Metrics Bar -->
+      <div class="bg-[#F3EFE6] border-t border-[#DDD6C8]">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div class="flex flex-wrap items-center gap-2.5 text-xs sm:text-sm">
+            <a href="mailto:zhangshuai@nju.edu.cn" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#1C2321] text-[#FAF8F4] hover:bg-[#B85D3B] transition-colors">
+              <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+              <span>zhangshuai@nju.edu.cn</span>
+            </a>
+            <a href="https://orcid.org/0009-0009-1897-5811" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#DDD6C8] bg-[#FAF8F4] text-[#1C2321] hover:border-[#2D5A5E] hover:text-[#2D5A5E] transition-colors font-mono-geo text-xs">
+              <i data-lucide="fingerprint" class="w-3.5 h-3.5 text-[#2D5A5E]"></i>
+              <span>ORCID: 0009-0009-1897-5811</span>
+            </a>
+            <a href="https://scholar.google.com/citations?user=4TMRXlUAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#DDD6C8] bg-[#FAF8F4] text-[#1C2321] hover:border-[#B85D3B] hover:text-[#B85D3B] transition-colors">
+              <i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-[#B85D3B]"></i>
+              <span data-i18n="linkScholar">Google Scholar</span>
+            </a>
+            <a href="https://www.researchgate.net/profile/Zhangshuai-Hou-2" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#DDD6C8] bg-[#FAF8F4] text-[#1C2321] hover:border-[#2D5A5E] hover:text-[#2D5A5E] transition-colors">
+              <i data-lucide="book-open" class="w-3.5 h-3.5 text-[#2D5A5E]"></i>
+              <span>ResearchGate</span>
+            </a>
+            <a href="https://github.com/Lewis-Hou" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#DDD6C8] bg-[#FAF8F4] text-[#1C2321] hover:border-[#1C2321] transition-colors">
+              <i data-lucide="github" class="w-3.5 h-3.5 text-[#1C2321]"></i>
+              <span>GitHub</span>
+            </a>
+          </div>
+
+          <div class="flex items-center gap-5 text-xs sm:text-sm border-t lg:border-t-0 pt-3 lg:pt-0 border-[#DDD6C8]">
+            <div>
+              <div id="metricPubsVal" class="font-editorial font-bold text-lg text-[#1C2321] leading-none">28</div>
+              <div class="text-[#525B58] text-xs mt-0.5" data-i18n="metricPubs">Publications</div>
+            </div>
+            <div class="w-px h-7 bg-[#DDD6C8]"></div>
+            <div>
+              <div id="metricCitesVal" class="font-editorial font-bold text-lg text-[#B85D3B] leading-none">579</div>
+              <div class="text-[#525B58] text-xs mt-0.5" data-i18n="metricCites">Citations</div>
+            </div>
+            <div class="w-px h-7 bg-[#DDD6C8]"></div>
+            <div>
+              <div id="metricHVal" class="font-editorial font-bold text-lg text-[#2D5A5E] leading-none">12</div>
+              <div class="text-[#525B58] text-xs mt-0.5">h-index</div>
+            </div>
+            <div class="w-px h-7 bg-[#DDD6C8]"></div>
+            <div>
+              <div id="metricI10Val" class="font-editorial font-bold text-lg text-[#1C2321] leading-none">14</div>
+              <div class="text-[#525B58] text-xs mt-0.5">i10-index</div>
+            </div>
+            <button id="syncMetricsBtn" type="button" title="Sync live metrics via OpenAlex ORCID" class="ml-1 p-1.5 rounded-full border border-[#DDD6C8] bg-[#FAF8F4] text-[#525B58] hover:text-[#2D5A5E] hover:border-[#2D5A5E] transition-colors" aria-label="Sync live metrics">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-16">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        <div class="lg:col-span-4">
+          <p class="font-mono-geo text-xs uppercase tracking-[0.18em] text-[#B85D3B] mb-2" data-i18n="aboutKicker">01 · Profile</p>
+          <h2 class="font-editorial text-2xl sm:text-3xl font-bold text-[#1C2321] leading-snug" data-i18n="aboutHeading">
+            Calibrating Deep-Time Earth History Across Basins &amp; Biotas
+          </h2>
+          <div class="strata-rule w-24 mt-4 rounded-full"></div>
+        </div>
+        <div class="lg:col-span-8 space-y-4 text-[#2F3735] leading-relaxed text-[15px] sm:text-base">
+          <p data-i18n="aboutP1">
+            I am a postdoctoral researcher at the State Key Laboratory of Critical Earth Material Cycling and Mineral Deposits, School of Earth Sciences and Engineering, Nanjing University. My current research centers on high-precision Carboniferous and Permian geochronology and integrative stratigraphy—using CA-ID-TIMS zircon U–Pb dating of volcanic ash beds to anchor late Paleozoic timescales, hydrocarbon source rock evolution, and major biotic and paleoclimatic transitions.
+          </p>
+          <p data-i18n="aboutP2">
+            Previously, my master's work at the University of Science and Technology of China focused on quantitative paleogeographic reconstructions of the South China Block during the Permian, exploring sea-level dynamics, the Artinskian Warming Event, and paleobiogeographic knowledge graphs. Across both field and laboratory work, I integrate outcrop stratigraphy from Xinjiang, South China, North China, and the Qinghai-Tibetan Plateau with high-resolution radiometric age models.
+          </p>
+          <div class="pt-2 flex flex-wrap gap-2">
+            <span class="px-3 py-1 rounded-full text-xs font-medium bg-[#2D5A5E]/10 text-[#2D5A5E] border border-[#2D5A5E]/20" data-i18n="tag1">Carboniferous–Permian Geochronology</span>
+            <span class="px-3 py-1 rounded-full text-xs font-medium bg-[#B85D3B]/10 text-[#B85D3B] border border-[#B85D3B]/20" data-i18n="tag2">CA-ID-TIMS U–Pb Dating</span>
+            <span class="px-3 py-1 rounded-full text-xs font-medium bg-[#1C2321]/8 text-[#1C2321] border border-[#DDD6C8]" data-i18n="tag3">Integrative Stratigraphy</span>
+            <span class="px-3 py-1 rounded-full text-xs font-medium bg-[#2D5A5E]/10 text-[#2D5A5E] border border-[#2D5A5E]/20" data-i18n="tag4">Quantitative Paleogeography</span>
+            <span class="px-3 py-1 rounded-full text-xs font-medium bg-[#B85D3B]/10 text-[#B85D3B] border border-[#B85D3B]/20" data-i18n="tag5">Late Paleozoic Ice Age &amp; Biotic Crises</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flagship Fieldwork Photo Gallery -->
+    <section id="fieldwork" class="bg-[#F3EFE6] border-y border-[#DDD6C8] py-16 sm:py-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+          <div>
+            <p class="font-mono-geo text-xs uppercase tracking-[0.18em] text-[#B85D3B] mb-2" data-i18n="fieldKicker">02 · Fieldwork Archive</p>
+            <h2 class="font-editorial text-3xl sm:text-4xl font-bold text-[#1C2321]" data-i18n="fieldHeading">From Outcrop to Timescale</h2>
+            <p class="mt-2 text-sm sm:text-base text-[#525B58] max-w-2xl" data-i18n="fieldSub">
+              Field stratigraphy is the foundation of every age model. Explore key Late Paleozoic study regions below—click any plate to open the full-screen geological lightbox, or add your own fieldwork photographs directly to preview them in the gallery.
+            </p>
+          </div>
+          <div class="shrink-0">
+            <button id="openUploadModalBtn" type="button" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#B85D3B] text-[#FAF8F4] text-sm font-medium hover:bg-[#9E4B2D] transition-colors shadow-sm">
+              <i data-lucide="image-plus" class="w-4 h-4"></i>
+              <span data-i18n="addPhotoBtn">Add Field Photo</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Region Filter Pills -->
+        <div id="galleryFilters" class="flex flex-wrap items-center gap-2 mb-8">
+          <button type="button" data-region="all" class="gallery-filter-btn px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-[#1C2321] text-[#FAF8F4] transition-colors" data-i18n="filterAllRegions">All Regions</button>
+          <button type="button" data-region="junggar" class="gallery-filter-btn px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-[#FAF8F4] text-[#525B58] border border-[#DDD6C8] hover:border-[#1C2321] transition-colors" data-i18n="filterJunggar">Junggar Basin · Xinjiang</button>
+          <button type="button" data-region="south-china" class="gallery-filter-btn px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-[#FAF8F4] text-[#525B58] border border-[#DDD6C8] hover:border-[#1C2321] transition-colors" data-i18n="filterSouthChina">South China Block</button>
+          <button type="button" data-region="north-china" class="gallery-filter-btn px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-[#FAF8F4] text-[#525B58] border border-[#DDD6C8] hover:border-[#1C2321] transition-colors" data-i18n="filterNorthChina">North China Block</button>
+          <button type="button" data-region="tibet" class="gallery-filter-btn px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-[#FAF8F4] text-[#525B58] border border-[#DDD6C8] hover:border-[#1C2321] transition-colors" data-i18n="filterTibet">Qinghai-Tibetan Plateau</button>
+          <button type="button" data-region="custom" id="customFilterBtn" class="hidden gallery-filter-btn px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-[#FAF8F4] text-[#B85D3B] border border-[#B85D3B]/40 hover:border-[#B85D3B] transition-colors" data-i18n="filterUploads">My Uploads</button>
+        </div>
+
+        <!-- Editorial Gallery Grid -->
+        <div id="galleryGrid" class="grid grid-cols-1 md:grid-cols-12 gap-6"></div>
+
+        <p class="mt-6 text-xs text-[#525B58] flex items-center gap-2">
+          <i data-lucide="info" class="w-3.5 h-3.5 text-[#2D5A5E] shrink-0"></i>
+          <span data-i18n="galleryNote">Initial plates show illustrative regional outcrop scenes for your four documented study basins. Use "Add Field Photo" above to preview your own field photographs immediately, or upload your photos in chat to embed them permanently.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- Research Themes & Press Highlights -->
+    <section id="research" class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+      <div class="mb-10">
+        <p class="font-mono-geo text-xs uppercase tracking-[0.18em] text-[#B85D3B] mb-2" data-i18n="resKicker">03 · Research Program</p>
+        <h2 class="font-editorial text-3xl sm:text-4xl font-bold text-[#1C2321]" data-i18n="resHeading">Core Themes &amp; Highlights</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <article class="bg-[#FAF8F4] border border-[#DDD6C8] rounded-xl p-6 flex flex-col justify-between hover:border-[#B85D3B]/60 transition-colors">
+          <div>
+            <div class="w-10 h-10 rounded-lg bg-[#B85D3B]/12 text-[#B85D3B] flex items-center justify-center mb-4">
+              <i data-lucide="clock" class="w-5 h-5"></i>
+            </div>
+            <h3 class="font-editorial text-xl font-bold text-[#1C2321] mb-2" data-i18n="theme1Title">High-Precision U–Pb Geochronology</h3>
+            <p class="text-sm text-[#525B58] leading-relaxed" data-i18n="theme1Desc">
+              Establishing high-resolution Carboniferous–Permian and Silurian chronostratigraphic frameworks via CA-ID-TIMS zircon U–Pb dating across the Junggar Basin, North China, and South China—constraining source rock deposition, the scissor-like closure of the Paleo-Asian Ocean, and early gnathostome radiation.
+            </p>
+          </div>
+          <div class="mt-5 pt-4 border-t border-[#DDD6C8] font-mono-geo text-[11px] text-[#2D5A5E]">
+            GSA Bulletin (2026) · Sci. China Earth Sci. (2026) · EPSL (2026)
+          </div>
+        </article>
+
+        <article class="bg-[#FAF8F4] border border-[#DDD6C8] rounded-xl p-6 flex flex-col justify-between hover:border-[#2D5A5E]/60 transition-colors">
+          <div>
+            <div class="w-10 h-10 rounded-lg bg-[#2D5A5E]/12 text-[#2D5A5E] flex items-center justify-center mb-4">
+              <i data-lucide="globe-2" class="w-5 h-5"></i>
+            </div>
+            <h3 class="font-editorial text-xl font-bold text-[#1C2321] mb-2" data-i18n="theme2Title">Quantitative Paleogeography</h3>
+            <p class="text-sm text-[#525B58] leading-relaxed" data-i18n="theme2Desc">
+              Reconstructing dynamic Permian paleogeography and sea-level evolution of the South China and North China blocks, linking lithofacies shifts to the Artinskian Warming Event, coal and hydrocarbon accumulation, and data-driven paleobiogeographic knowledge graphs.
+            </p>
+          </div>
+          <div class="mt-5 pt-4 border-t border-[#DDD6C8] font-mono-geo text-[11px] text-[#2D5A5E]">
+            Palaeo3 (2024, 2023, 2020) · J. Earth Sci. (2023)
+          </div>
+        </article>
+
+        <article class="bg-[#FAF8F4] border border-[#DDD6C8] rounded-xl p-6 flex flex-col justify-between hover:border-[#B85D3B]/60 transition-colors">
+          <div>
+            <div class="w-10 h-10 rounded-lg bg-[#1C2321]/8 text-[#1C2321] flex items-center justify-center mb-4">
+              <i data-lucide="layers" class="w-5 h-5"></i>
+            </div>
+            <h3 class="font-editorial text-xl font-bold text-[#1C2321] mb-2" data-i18n="theme3Title">Integrative Stratigraphy &amp; Biotic Crises</h3>
+            <p class="text-sm text-[#525B58] leading-relaxed" data-i18n="theme3Desc">
+              Synthesizing biostratigraphic, geochemical, and radiometric records across China and the Tethyan realm—including the redefinition of the base-Wuchiapingian GSSP/SABS, the end-Guadalupian biotic crisis, and Permian stratigraphy of the Qinghai-Tibetan Plateau.
+            </p>
+          </div>
+          <div class="mt-5 pt-4 border-t border-[#DDD6C8] font-mono-geo text-[11px] text-[#2D5A5E]">
+            Nature Comm. (2025) · Episodes (2024) · Geology (2021)
+          </div>
+        </article>
+      </div>
+
+      <!-- Featured Commentary & Press -->
+      <div class="bg-[#1C2321] text-[#FAF8F4] rounded-2xl p-6 sm:p-8">
+        <div class="flex items-center gap-2 text-xs font-mono-geo uppercase tracking-[0.18em] text-[#E8C5A5] mb-4">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          <span data-i18n="pressKicker">Featured Research Commentary &amp; Press</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="border border-white/15 rounded-xl p-5 bg-white/5">
+            <span class="inline-block font-mono-geo text-[11px] px-2 py-0.5 rounded bg-[#B85D3B] text-white mb-3" data-i18n="pressTag1">Research Highlight · 2026</span>
+            <h3 class="font-editorial text-lg font-semibold leading-snug mb-2" data-i18n="press1Title">
+              Constructing a High-Precision Chronostratigraphic Framework: Re-evaluating the Carboniferous–Permian of Northern Xinjiang
+            </h3>
+            <p class="text-xs sm:text-sm text-[#D5CFC3] mb-3" data-i18n="press1Desc">
+              Commentary by Academician Chengzao Jia (贾承造) in <em>SCIENTIA SINICA Terrae</em> 56(4): 1590–1592 highlighting Hou et al. (2026) on the Junggar Basin chronostratigraphic framework.
+            </p>
+            <a href="https://doi.org/10.1360/SSTe-2026-0044" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-mono-geo text-[#E8C5A5] hover:underline">
+              <span>DOI: 10.1360/SSTe-2026-0044</span>
+              <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+
+          <div class="border border-white/15 rounded-xl p-5 bg-white/5">
+            <span class="inline-block font-mono-geo text-[11px] px-2 py-0.5 rounded bg-[#2D5A5E] text-white mb-3" data-i18n="pressTag2">EurekAlert! News Release · Mar 2026</span>
+            <h3 class="font-editorial text-lg font-semibold leading-snug mb-2" data-i18n="press2Title">
+              High-Precision Dating Reshapes Understanding of Carboniferous–Permian Source Rocks in the Junggar Basin
+            </h3>
+            <p class="text-xs sm:text-sm text-[#D5CFC3] mb-3" data-i18n="press2Desc">
+              International science news feature covering our new U–Pb timeline showing a diachronous marine-to-terrestrial shift and "scissor-like" Paleo-Asian Ocean closure.
+            </p>
+            <a href="https://www.eurekalert.org/news-releases/1121215" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-mono-geo text-[#E8C5A5] hover:underline">
+              <span data-i18n="readRelease">Read EurekAlert! Release</span>
+              <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Publications Section -->
+    <section id="publications" class="bg-[#F3EFE6] border-y border-[#DDD6C8] py-16 sm:py-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-8">
+          <div class="lg:col-span-7">
+            <p class="font-mono-geo text-xs uppercase tracking-[0.18em] text-[#B85D3B] mb-2" data-i18n="pubKicker">04 · Complete Bibliography</p>
+            <h2 class="font-editorial text-3xl sm:text-4xl font-bold text-[#1C2321]" data-i18n="pubHeading">Peer-Reviewed Publications</h2>
+            <p class="mt-2 text-sm text-[#525B58]" data-i18n="pubSub">
+              All 28 authored publications (2019–2026) compiled from your EndNote library. Filter by authorship role, research theme, language, or keyword.
+            </p>
+          </div>
+          <div class="lg:col-span-5 bg-[#FAF8F4] border border-[#DDD6C8] rounded-xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-mono-geo uppercase tracking-wider text-[#525B58]" data-i18n="chartTitle">Publications by Year (2019–2026)</span>
+              <span class="text-xs font-mono-geo text-[#B85D3B] font-semibold">n = 28</span>
+            </div>
+            <div class="relative h-36">
+              <canvas id="pubChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter & Search Controls -->
+        <div class="bg-[#FAF8F4] border border-[#DDD6C8] rounded-xl p-4 sm:p-5 mb-6 space-y-4">
+          <div class="flex flex-col sm:flex-row gap-3">
+            <div class="relative flex-1">
+              <i data-lucide="search" class="w-4 h-4 text-[#525B58] absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+              <input id="pubSearchInput" type="text" placeholder="Search title, journal, co-author, or year..." class="w-full pl-10 pr-4 py-2 text-sm rounded-lg border border-[#DDD6C8] bg-white focus:outline-none focus:border-[#2D5A5E]" />
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <select id="pubTopicSelect" class="px-3 py-2 text-sm rounded-lg border border-[#DDD6C8] bg-white text-[#1C2321] focus:outline-none focus:border-[#2D5A5E]">
+                <option value="all" data-i18n="topicAll">All Themes</option>
+                <option value="geochronology" data-i18n="topicGeo">Geochronology &amp; Basins</option>
+                <option value="paleogeography" data-i18n="topicPaleo">Paleogeography</option>
+                <option value="stratigraphy" data-i18n="topicStrat">Integrative Stratigraphy</option>
+                <option value="knowledge-graph" data-i18n="topicKG">Knowledge Graphs</option>
+              </select>
+              <select id="pubLangSelect" class="px-3 py-2 text-sm rounded-lg border border-[#DDD6C8] bg-white text-[#1C2321] focus:outline-none focus:border-[#2D5A5E]">
+                <option value="all" data-i18n="langAll">EN &amp; 中文</option>
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+            <div id="roleFilterGroup" class="flex flex-wrap gap-2">
+              <button type="button" data-role="all" class="role-btn px-3 py-1 rounded-full text-xs font-medium bg-[#1C2321] text-[#FAF8F4]" data-i18n="roleAll">All (28)</button>
+              <button type="button" data-role="first" class="role-btn px-3 py-1 rounded-full text-xs font-medium bg-[#F3EFE6] text-[#525B58] border border-[#DDD6C8] hover:border-[#B85D3B]" data-i18n="roleFirst">First Author (5)</button>
+              <button type="button" data-role="second" class="role-btn px-3 py-1 rounded-full text-xs font-medium bg-[#F3EFE6] text-[#525B58] border border-[#DDD6C8] hover:border-[#2D5A5E]" data-i18n="roleSecond">Second Author (4)</button>
+              <button type="button" data-role="coauthor" class="role-btn px-3 py-1 rounded-full text-xs font-medium bg-[#F3EFE6] text-[#525B58] border border-[#DDD6C8] hover:border-[#1C2321]" data-i18n="roleCo">Co-author (19)</button>
+            </div>
+            <div id="pubCountLabel" class="text-xs font-mono-geo text-[#525B58]">Showing 28 of 28</div>
+          </div>
+        </div>
+
+        <!-- Publications List -->
+        <div id="pubList" class="space-y-3"></div>
+      </div>
+    </section>
+
+    <!-- Education & Academic Timeline -->
+    <section id="cv" class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div class="lg:col-span-4">
+          <p class="font-mono-geo text-xs uppercase tracking-[0.18em] text-[#B85D3B] mb-2" data-i18n="cvKicker">05 · Academic Background</p>
+          <h2 class="font-editorial text-3xl font-bold text-[#1C2321]" data-i18n="cvHeading">Education &amp; Appointments</h2>
+          <div class="strata-rule w-24 mt-4 rounded-full"></div>
+        </div>
+
+        <div class="lg:col-span-8">
+          <ol class="relative border-l-2 border-[#DDD6C8] space-y-8 pl-6 sm:pl-8">
+            <li class="relative">
+              <span class="absolute -left-[33px] sm:-left-[41px] top-1 w-4 h-4 rounded-full bg-[#B85D3B] ring-4 ring-[#FAF8F4]"></span>
+              <div class="font-mono-geo text-xs text-[#B85D3B] font-semibold uppercase tracking-wider" data-i18n="t1Date">2025 – Present</div>
+              <h3 class="font-editorial text-lg font-bold text-[#1C2321] mt-0.5" data-i18n="t1Title">Postdoctoral Researcher</h3>
+              <p class="text-sm font-medium text-[#2D5A5E]" data-i18n="t1Inst">Nanjing University · State Key Laboratory of Critical Earth Material Cycling and Mineral Deposits</p>
+              <p class="text-sm text-[#525B58] mt-1" data-i18n="t1Desc">High-precision Carboniferous–Permian geochronology, deep-time stratigraphy, and Pangaea sedimentary hiatus calibration.</p>
+            </li>
+
+            <li class="relative">
+              <span class="absolute -left-[33px] sm:-left-[41px] top-1 w-4 h-4 rounded-full bg-[#2D5A5E] ring-4 ring-[#FAF8F4]"></span>
+              <div class="font-mono-geo text-xs text-[#2D5A5E] font-semibold uppercase tracking-wider">2020 – 2025</div>
+              <h3 class="font-editorial text-lg font-bold text-[#1C2321] mt-0.5" data-i18n="t2Title">Ph.D. in Geology</h3>
+              <p class="text-sm font-medium text-[#2D5A5E]" data-i18n="t2Inst">Nanjing University (南京大学)</p>
+              <p class="text-sm text-[#525B58] mt-1" data-i18n="t2Desc">Research focused on Carboniferous–Permian chronostratigraphy of the Xinjiang region (Junggar Basin and periphery).</p>
+            </li>
+
+            <li class="relative">
+              <span class="absolute -left-[33px] sm:-left-[41px] top-1 w-4 h-4 rounded-full bg-[#2D5A5E]/70 ring-4 ring-[#FAF8F4]"></span>
+              <div class="font-mono-geo text-xs text-[#525B58] font-semibold uppercase tracking-wider">2017 – 2020</div>
+              <h3 class="font-editorial text-lg font-bold text-[#1C2321] mt-0.5" data-i18n="t3Title">M.S. in Paleontology and Stratigraphy</h3>
+              <p class="text-sm font-medium text-[#2D5A5E]" data-i18n="t3Inst">University of Science and Technology of China (中国科学技术大学)</p>
+              <p class="text-sm text-[#525B58] mt-1" data-i18n="t3Desc">Research focused on quantitative Permian paleogeography of the South China Block.</p>
+            </li>
+
+            <li class="relative">
+              <span class="absolute -left-[33px] sm:-left-[41px] top-1 w-4 h-4 rounded-full bg-[#DDD6C8] ring-4 ring-[#FAF8F4]"></span>
+              <div class="font-mono-geo text-xs text-[#525B58] font-semibold uppercase tracking-wider">2013 – 2017</div>
+              <h3 class="font-editorial text-lg font-bold text-[#1C2321] mt-0.5" data-i18n="t4Title">B.Eng. in Geological Engineering</h3>
+              <p class="text-sm font-medium text-[#2D5A5E]" data-i18n="t4Inst">China University of Mining and Technology (中国矿业大学)</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-[#1C2321] text-[#FAF8F4] py-16">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          <div class="md:col-span-6">
+            <p class="font-mono-geo text-xs uppercase tracking-[0.18em] text-[#E8C5A5] mb-2" data-i18n="contactKicker">06 · Correspondence</p>
+            <h2 class="font-editorial text-3xl font-bold mb-3" data-i18n="contactHeading">Get in Touch</h2>
+            <p class="text-sm text-[#D5CFC3] leading-relaxed max-w-md" data-i18n="contactDesc">
+              I welcome collaborations in Late Paleozoic geochronology, integrative stratigraphy, paleogeographic reconstruction, and fieldwork across Asia.
+            </p>
+          </div>
+          <div class="md:col-span-6 space-y-3 text-sm">
+            <div class="flex items-center justify-between gap-3 bg-white/5 border border-white/10 rounded-lg px-4 py-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <i data-lucide="mail" class="w-4 h-4 text-[#E8C5A5] shrink-0"></i>
+                <a href="mailto:zhangshuai@nju.edu.cn" class="hover:text-[#E8C5A5] truncate font-mono-geo">zhangshuai@nju.edu.cn</a>
+              </div>
+              <button type="button" data-copy="zhangshuai@nju.edu.cn" class="copy-trigger text-xs px-2.5 py-1 rounded bg-white/10 hover:bg-[#B85D3B] transition-colors shrink-0" data-i18n="copyBtn">Copy</button>
+            </div>
+
+            <div class="flex items-center justify-between gap-3 bg-white/5 border border-white/10 rounded-lg px-4 py-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <i data-lucide="mail" class="w-4 h-4 text-[#E8C5A5] shrink-0"></i>
+                <a href="mailto:zshou@foxmail.com" class="hover:text-[#E8C5A5] truncate font-mono-geo">zshou@foxmail.com</a>
+              </div>
+              <button type="button" data-copy="zshou@foxmail.com" class="copy-trigger text-xs px-2.5 py-1 rounded bg-white/10 hover:bg-[#B85D3B] transition-colors shrink-0" data-i18n="copyBtn">Copy</button>
+            </div>
+
+            <div class="flex items-start gap-3 bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-[#D5CFC3]">
+              <i data-lucide="map-pin" class="w-4 h-4 text-[#E8C5A5] shrink-0 mt-0.5"></i>
+              <span data-i18n="address">School of Earth Sciences and Engineering, Nanjing University (Xianlin Campus), 163 Xianlin Avenue, Qixia District, Nanjing 210023, China</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-[#141918] text-[#9AA39F] text-xs py-6 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p>© 2026 <span data-i18n="footerName">Zhangshuai Hou (侯章帅)</span> · Nanjing University</p>
+      <div class="flex items-center gap-4">
+        <a href="https://orcid.org/0009-0009-1897-5811" target="_blank" rel="noopener noreferrer" class="hover:text-white">ORCID</a>
+        <a href="https://scholar.google.com/citations?user=4TMRXlUAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="hover:text-white">Google Scholar</a>
+        <a href="https://www.researchgate.net/profile/Zhangshuai-Hou-2" target="_blank" rel="noopener noreferrer" class="hover:text-white">ResearchGate</a>
+        <a href="https://github.com/Lewis-Hou" target="_blank" rel="noopener noreferrer" class="hover:text-white">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Full-Screen Editorial Lightbox Modal -->
+  <div id="lightboxModal" class="hidden fixed inset-0 z-50 bg-[#141918]/95 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8" role="dialog" aria-modal="true">
+    <button id="lightboxClose" type="button" class="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-full bg-white/10 text-white hover:bg-[#B85D3B] flex items-center justify-center transition-colors" aria-label="Close lightbox">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+    <button id="lightboxPrev" type="button" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white/25 flex items-center justify-center transition-colors" aria-label="Previous photo">
+      <i data-lucide="chevron-left" class="w-5 h-5"></i>
+    </button>
+    <button id="lightboxNext" type="button" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white/25 flex items-center justify-center transition-colors" aria-label="Next photo">
+      <i data-lucide="chevron-right" class="w-5 h-5"></i>
+    </button>
+
+    <div class="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      <div class="lg:col-span-8 flex items-center justify-center">
+        <img id="lightboxImg" src="" alt="" class="max-h-[72vh] max-w-full w-auto rounded-lg shadow-2xl object-contain" />
+      </div>
+      <div class="lg:col-span-4 text-[#FAF8F4] space-y-3">
+        <span id="lightboxBadge" class="inline-block font-mono-geo text-[11px] uppercase tracking-wider px-2.5 py-0.5 rounded bg-[#B85D3B] text-white"></span>
+        <h3 id="lightboxTitle" class="font-editorial text-2xl font-bold leading-snug"></h3>
+        <p id="lightboxMeta" class="font-mono-geo text-xs text-[#E8C5A5]"></p>
+        <p id="lightboxDesc" class="text-sm text-[#D5CFC3] leading-relaxed"></p>
+        <div id="lightboxPaperWrap" class="pt-3 border-t border-white/15 text-xs text-[#B9C2BE]"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Fieldwork Photo Modal -->
+  <div id="uploadModal" class="hidden fixed inset-0 z-50 bg-[#141918]/75 backdrop-blur-sm flex items-center justify-center p-4" role="dialog" aria-modal="true">
+    <div class="bg-[#FAF8F4] border border-[#DDD6C8] rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-editorial text-xl font-bold text-[#1C2321]" data-i18n="uploadModalTitle">Add Fieldwork Photograph</h3>
+        <button id="closeUploadModalBtn" type="button" class="p-1.5 rounded-lg text-[#525B58] hover:bg-[#F3EFE6]">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <form id="uploadForm" class="space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-[#525B58] mb-1" data-i18n="uploadFileLabel">Select Photo (JPG / PNG / WebP)</label>
+          <input id="fieldPhotoInput" type="file" accept="image/*" required class="block w-full text-xs text-[#525B58] file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-[#1C2321] file:text-white hover:file:bg-[#B85D3B] cursor-pointer" />
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-[#525B58] mb-1" data-i18n="uploadTitleLabel">Locality / Title</label>
+            <input id="fieldTitleInput" type="text" required placeholder="e.g. Tarlong Section, Turpan" class="w-full px-3 py-2 text-sm rounded-lg border border-[#DDD6C8] bg-white focus:outline-none focus:border-[#2D5A5E]" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-[#525B58] mb-1" data-i18n="uploadRegionLabel">Region</label>
+            <select id="fieldRegionInput" class="w-full px-3 py-2 text-sm rounded-lg border border-[#DDD6C8] bg-white focus:outline-none focus:border-[#2D5A5E]">
+              <option value="junggar">Junggar Basin · Xinjiang</option>
+              <option value="south-china">South China Block</option>
+              <option value="north-china">North China Block</option>
+              <option value="tibet">Qinghai-Tibetan Plateau</option>
+              <option value="custom">Other Field Locality</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-[#525B58] mb-1" data-i18n="uploadStrataLabel">Stratigraphic Horizon / Year</label>
+          <input id="fieldStrataInput" type="text" placeholder="e.g. Lucaogou Fm. (Cisuralian) · 2024" class="w-full px-3 py-2 text-sm rounded-lg border border-[#DDD6C8] bg-white focus:outline-none focus:border-[#2D5A5E]" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-[#525B58] mb-1" data-i18n="uploadDescLabel">Field Note / Caption</label>
+          <textarea id="fieldDescInput" rows="2" placeholder="Describe the outcrop, ash bed sampling, or tectonic setting..." class="w-full px-3 py-2 text-sm rounded-lg border border-[#DDD6C8] bg-white focus:outline-none focus:border-[#2D5A5E]"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button id="cancelUploadBtn" type="button" class="px-4 py-2 text-sm rounded-lg border border-[#DDD6C8] text-[#525B58] hover:bg-[#F3EFE6]" data-i18n="cancelBtn">Cancel</button>
+          <button type="submit" class="px-4 py-2 text-sm rounded-lg bg-[#B85D3B] text-white font-medium hover:bg-[#9E4B2D]" data-i18n="savePhotoBtn">Add to Gallery</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-[#1C2321] text-[#FAF8F4] text-xs sm:text-sm px-4 py-2.5 rounded-lg shadow-xl border border-white/10"></div>
+
+  <script>
+    const I18N = {
+      en: {
+        brandName: "Zhangshuai Hou",
+        brandTag: "NJU · Geochronology",
+        navAbout: "About",
+        navFieldwork: "Fieldwork",
+        navResearch: "Research",
+        navPublications: "Publications",
+        navCV: "Timeline",
+        navContact: "Contact",
+        heroKicker: "Carboniferous–Permian Geochronology · Stratigraphy · Paleogeography",
+        heroName: "Zhangshuai Hou",
+        heroNameSub: "侯章帅",
+        heroAffil: "Postdoctoral Researcher, State Key Laboratory of Critical Earth Material Cycling and Mineral Deposits, School of Earth Sciences and Engineering, Nanjing University",
+        linkScholar: "Google Scholar",
+        metricPubs: "Publications",
+        metricCites: "Citations",
+        aboutKicker: "01 · Profile",
+        aboutHeading: "Calibrating Deep-Time Earth History Across Basins & Biotas",
+        aboutP1: "I am a postdoctoral researcher at the State Key Laboratory of Critical Earth Material Cycling and Mineral Deposits, School of Earth Sciences and Engineering, Nanjing University. My current research centers on high-precision Carboniferous and Permian geochronology and integrative stratigraphy—using CA-ID-TIMS zircon U–Pb dating of volcanic ash beds to anchor late Paleozoic timescales, hydrocarbon source rock evolution, and major biotic and paleoclimatic transitions.",
+        aboutP2: "Previously, my master's work at the University of Science and Technology of China focused on quantitative paleogeographic reconstructions of the South China Block during the Permian, exploring sea-level dynamics, the Artinskian Warming Event, and paleobiogeographic knowledge graphs. Across both field and laboratory work, I integrate outcrop stratigraphy from Xinjiang, South China, North China, and the Qinghai-Tibetan Plateau with high-resolution radiometric age models.",
+        tag1: "Carboniferous–Permian Geochronology",
+        tag2: "CA-ID-TIMS U–Pb Dating",
+        tag3: "Integrative Stratigraphy",
+        tag4: "Quantitative Paleogeography",
+        tag5: "Late Paleozoic Ice Age & Biotic Crises",
+        fieldKicker: "02 · Fieldwork Archive",
+        fieldHeading: "From Outcrop to Timescale",
+        fieldSub: "Field stratigraphy is the foundation of every age model. Explore key Late Paleozoic study regions below—click any plate to open the full-screen geological lightbox, or add your own fieldwork photographs directly to preview them in the gallery.",
+        addPhotoBtn: "Add Field Photo",
+        filterAllRegions: "All Regions",
+        filterJunggar: "Junggar Basin · Xinjiang",
+        filterSouthChina: "South China Block",
+        filterNorthChina: "North China Block",
+        filterTibet: "Qinghai-Tibetan Plateau",
+        filterUploads: "My Uploads",
+        galleryNote: "Initial plates show illustrative regional outcrop scenes for your four documented study basins. Use \"Add Field Photo\" above to preview your own field photographs immediately, or upload your photos in chat to embed them permanently.",
+        resKicker: "03 · Research Program",
+        resHeading: "Core Themes & Highlights",
+        theme1Title: "High-Precision U–Pb Geochronology",
+        theme1Desc: "Establishing high-resolution Carboniferous–Permian and Silurian chronostratigraphic frameworks via CA-ID-TIMS zircon U–Pb dating across the Junggar Basin, North China, and South China—constraining source rock deposition, the scissor-like closure of the Paleo-Asian Ocean, and early gnathostome radiation.",
+        theme2Title: "Quantitative Paleogeography",
+        theme2Desc: "Reconstructing dynamic Permian paleogeography and sea-level evolution of the South China and North China blocks, linking lithofacies shifts to the Artinskian Warming Event, coal and hydrocarbon accumulation, and data-driven paleobiogeographic knowledge graphs.",
+        theme3Title: "Integrative Stratigraphy & Biotic Crises",
+        theme3Desc: "Synthesizing biostratigraphic, geochemical, and radiometric records across China and the Tethyan realm—including the redefinition of the base-Wuchiapingian GSSP/SABS, the end-Guadalupian biotic crisis, and Permian stratigraphy of the Qinghai-Tibetan Plateau.",
+        pressKicker: "Featured Research Commentary & Press",
+        pressTag1: "Research Highlight · 2026",
+        press1Title: "Constructing a High-Precision Chronostratigraphic Framework: Re-evaluating the Carboniferous–Permian of Northern Xinjiang",
+        press1Desc: "Commentary by Academician Chengzao Jia (贾承造) in SCIENTIA SINICA Terrae 56(4): 1590–1592 highlighting Hou et al. (2026) on the Junggar Basin chronostratigraphic framework.",
+        pressTag2: "EurekAlert! News Release · Mar 2026",
+        press2Title: "High-Precision Dating Reshapes Understanding of Carboniferous–Permian Source Rocks in the Junggar Basin",
+        press2Desc: "International science news feature covering our new U–Pb timeline showing a diachronous marine-to-terrestrial shift and \"scissor-like\" Paleo-Asian Ocean closure.",
+        readRelease: "Read EurekAlert! Release",
+        pubKicker: "04 · Complete Bibliography",
+        pubHeading: "Peer-Reviewed Publications",
+        pubSub: "All 28 authored publications (2019–2026) compiled from your EndNote library. Filter by authorship role, research theme, language, or keyword.",
+        chartTitle: "Publications by Year (2019–2026)",
+        topicAll: "All Themes",
+        topicGeo: "Geochronology & Basins",
+        topicPaleo: "Paleogeography",
+        topicStrat: "Integrative Stratigraphy",
+        topicKG: "Knowledge Graphs",
+        langAll: "EN & 中文",
+        roleAll: "All (28)",
+        roleFirst: "First Author (5)",
+        roleSecond: "Second Author (4)",
+        roleCo: "Co-author (19)",
+        cvKicker: "05 · Academic Background",
+        cvHeading: "Education & Appointments",
+        t1Date: "2025 – Present",
+        t1Title: "Postdoctoral Researcher",
+        t1Inst: "Nanjing University · State Key Laboratory of Critical Earth Material Cycling and Mineral Deposits",
+        t1Desc: "High-precision Carboniferous–Permian geochronology, deep-time stratigraphy, and Pangaea sedimentary hiatus calibration.",
+        t2Title: "Ph.D. in Geology",
+        t2Inst: "Nanjing University (南京大学)",
+        t2Desc: "Research focused on Carboniferous–Permian chronostratigraphy of the Xinjiang region (Junggar Basin and periphery).",
+        t3Title: "M.S. in Paleontology and Stratigraphy",
+        t3Inst: "University of Science and Technology of China (中国科学技术大学)",
+        t3Desc: "Research focused on quantitative Permian paleogeography of the South China Block.",
+        t4Title: "B.Eng. in Geological Engineering",
+        t4Inst: "China University of Mining and Technology (中国矿业大学)",
+        contactKicker: "06 · Correspondence",
+        contactHeading: "Get in Touch",
+        contactDesc: "I welcome collaborations in Late Paleozoic geochronology, integrative stratigraphy, paleogeographic reconstruction, and fieldwork across Asia.",
+        copyBtn: "Copy",
+        address: "School of Earth Sciences and Engineering, Nanjing University (Xianlin Campus), 163 Xianlin Avenue, Qixia District, Nanjing 210023, China",
+        footerName: "Zhangshuai Hou (侯章帅)",
+        uploadModalTitle: "Add Fieldwork Photograph",
+        uploadFileLabel: "Select Photo (JPG / PNG / WebP)",
+        uploadTitleLabel: "Locality / Title",
+        uploadRegionLabel: "Region",
+        uploadStrataLabel: "Stratigraphic Horizon / Year",
+        uploadDescLabel: "Field Note / Caption",
+        cancelBtn: "Cancel",
+        savePhotoBtn: "Add to Gallery",
+        searchPlaceholder: "Search title, journal, co-author, or year...",
+        sampleBadge: "Sample Regional Plate",
+        customBadge: "Field Upload",
+        copyCite: "Copy Citation",
+        copiedToast: "Copied to clipboard",
+        photoAddedToast: "Fieldwork photo added to gallery",
+        portraitUpdatedToast: "Portrait preview updated"
+      },
+      zh: {
+        brandName: "侯章帅",
+        brandTag: "南京大学 · 年代地层学",
+        navAbout: "个人简介",
+        navFieldwork: "野外工作",
+        navResearch: "研究方向",
+        navPublications: "发表论文",
+        navCV: "教育经历",
+        navContact: "联系方式",
+        heroKicker: "石炭—二叠纪年代地层学 · 综合地层学 · 定量古地理",
+        heroName: "侯章帅",
+        heroNameSub: "Zhangshuai Hou",
+        heroAffil: "南京大学地球科学与工程学院 · 关键地球物质循环与成矿全国重点实验室 · 博士后",
+        linkScholar: "Google 学术",
+        metricPubs: "发表论文",
+        metricCites: "总被引",
+        aboutKicker: "01 · 学术简介",
+        aboutHeading: "以高精度年代标尺锚定深时地球演化",
+        aboutP1: "现任南京大学地球科学与工程学院、关键地球物质循环与成矿全国重点实验室博士后。当前研究聚焦于石炭纪—二叠纪高精度同位素年代学与综合地层学，利用火山灰锆石 CA-ID-TIMS U–Pb 定年建立高分辨率晚古生代时间轴，制约盆地烃源岩发育演化、重大生物危机与古气候转折事件。",
+        aboutP2: "硕士阶段毕业于中国科学技术大学，主要从事华南板块二叠纪定量古地理重建，探讨海平面变化、亚丁斯克期增温事件（AWE）以及古生物地理知识图谱构建。研究工作紧密结合新疆准噶尔盆地、华南、华北及青藏高原的野外剖面实测与高精度实验分析。",
+        tag1: "石炭—二叠纪年代学",
+        tag2: "CA-ID-TIMS 锆石 U–Pb 定年",
+        tag3: "综合地层学",
+        tag4: "定量古地理重建",
+        tag5: "晚古生代冰期与生物危机",
+        fieldKicker: "02 · 野外工作影像志",
+        fieldHeading: "从野外剖面到高精度时间轴",
+        fieldSub: "野外地质调查与剖面实测是所有年代模型的基石。点击下方各研究区地质剖面卡片可进入全屏图集查看地层说明，也可直接点击右侧按钮上传并实时预览您的个人野外摄影作品。",
+        addPhotoBtn: "添加野外照片",
+        filterAllRegions: "全部区域",
+        filterJunggar: "新疆 · 准噶尔盆地",
+        filterSouthChina: "华南板块",
+        filterNorthChina: "华北板块",
+        filterTibet: "青藏高原",
+        filterUploads: "我的上传",
+        galleryNote: "初始展示为四个主要研究区的示意性地质景观图。您可以直接点击上方“添加野外照片”本地预览个人实拍图，或在对话中上传您的个人头像与野外照片以永久嵌入页面。",
+        resKicker: "03 · 研究方向与亮点",
+        resHeading: "核心课题与学术关注",
+        theme1Title: "高精度 U–Pb 年代地层学",
+        theme1Desc: "通过火山灰锆石 CA-ID-TIMS U–Pb 定年，在新疆准噶尔盆地、华北及华南建立高分辨率石炭—二叠纪及志留纪年代格架，揭示古亚洲洋“剪刀式”闭合过程、烃源岩时空演化及早期有颌类辐射时间。",
+        theme2Title: "深时定量古地理重建",
+        theme2Desc: "开展华南与华北板块二叠纪动态岩相古地理与海平面演化重建，定量解析亚丁斯克期增温事件、聚煤与烃源岩发育响应，并参与古生物地理知识图谱与大数据平台建设。",
+        theme3Title: "综合地层与重大生物气候事件",
+        theme3Desc: "整合牙形类生物地层、同位素地球化学与高精度定年记录，参与乐平统底界新“金钉子”（GSSP/SABS）再定义、瓜德鲁普世末生物危机成因及青藏高原二叠纪综合地层研究。",
+        pressKicker: "亮点评述与媒体报道",
+        pressTag1: "《中国科学》亮点评述 · 2026",
+        press1Title: "构建高精度年代地层格架：重新认识北疆石炭-二叠系",
+        press1Desc: "贾承造院士在《中国科学：地球科学》2026年第56卷第4期（1590–1592页）发表专题评述，高度评价侯章帅等（2026）关于准噶尔盆地及周缘石炭—二叠纪年代地层格架的研究成果。",
+        pressTag2: "EurekAlert! 国际新闻稿 · 2026年3月",
+        press2Title: "高精度定年重塑准噶尔盆地石炭—二叠纪烃源岩时空演化认识",
+        press2Desc: "EurekAlert! 专题报道了团队利用高精度定年揭示北疆海陆转换穿时性及古亚洲洋“剪刀式”闭合的重要进展。",
+        readRelease: "阅读 EurekAlert! 原文",
+        pubKicker: "04 · 完整论文目录",
+        pubHeading: "学术论著",
+        pubSub: "基于您的 EndNote 文献库完整收录 28 篇署名论文（2019–2026），支持按作者位次、研究主题、语种及关键词实时检索。",
+        chartTitle: "年度发表趋势（2019–2026）",
+        topicAll: "全部主题",
+        topicGeo: "年代学与盆地演化",
+        topicPaleo: "古地理重建",
+        topicStrat: "综合地层与生物群",
+        topicKG: "地学知识图谱",
+        langAll: "中英文全部",
+        roleAll: "全部 (28)",
+        roleFirst: "第一作者 (5)",
+        roleSecond: "第二作者 (4)",
+        roleCo: "合作论文 (19)",
+        cvKicker: "05 · 学术履历",
+        cvHeading: "教育与工作经历",
+        t1Date: "2025 – 至今",
+        t1Title: "博士后研究员",
+        t1Inst: "南京大学 · 关键地球物质循环与成矿全国重点实验室",
+        t1Desc: "从事石炭—二叠纪高精度年代地层学、深时地质事件及泛大陆中二叠世沉积间断研究。",
+        t2Title: "地质学 博士",
+        t2Inst: "南京大学",
+        t2Desc: "主要从事新疆地区（准噶尔盆地及周缘）石炭—二叠纪年代地层学研究。",
+        t3Title: "古生物学与地层学 硕士",
+        t3Inst: "中国科学技术大学",
+        t3Desc: "主要从事华南板块二叠纪定量古地理研究。",
+        t4Title: "地质工程 学士",
+        t4Inst: "中国矿业大学",
+        contactKicker: "06 · 学术联系",
+        contactHeading: "联系方式",
+        contactDesc: "欢迎在晚古生代同位素年代学、综合地层学、定量古地理重建及野外联合科考等方面交流合作。",
+        copyBtn: "复制",
+        address: "中国江苏省南京市栖霞区仙林大道163号 南京大学仙林校区地球科学与工程学院（邮编 210023）",
+        footerName: "侯章帅 (Zhangshuai Hou)",
+        uploadModalTitle: "添加野外工作照片",
+        uploadFileLabel: "选择照片 (JPG / PNG / WebP)",
+        uploadTitleLabel: "剖面/地点名称",
+        uploadRegionLabel: "所属研究区",
+        uploadStrataLabel: "地层层位 / 年份",
+        uploadDescLabel: "野外记录 / 图注说明",
+        cancelBtn: "取消",
+        savePhotoBtn: "添加到图集",
+        searchPlaceholder: "搜索论文标题、期刊、合作者或年份...",
+        sampleBadge: "区域示意地质图",
+        customBadge: "野外实拍",
+        copyCite: "复制引用",
+        copiedToast: "已复制到剪贴板",
+        photoAddedToast: "野外照片已添加到图集",
+        portraitUpdatedToast: "头像预览已更新"
+      }
+    };
+
+    const GALLERY_ITEMS = [
+      {
+        id: "junggar-1",
+        region: "junggar",
+        isSample: true,
+        featured: true,
+        src: "images/junggar.jpg",
+        titleEn: "Junggar Basin & Northern Xinjiang",
+        titleZh: "新疆准噶尔盆地及周缘",
+        metaEn: "Kasimovian – Wuchiapingian · Fengcheng, Lucaogou & Pingdiquan Fms.",
+        metaZh: "卡西莫夫期—吴家坪期 · 风城组、芦草沟组与平地泉组",
+        descEn: "Volcanic ash beds interbedded with late Carboniferous–Permian lacustrine and marine-terrestrial strata anchor three major source-rock intervals and reveal a northwest-to-east diachronous marine-to-terrestrial transition supporting the 'scissor-like' closure of the Paleo-Asian Ocean.",
+        descZh: "北疆石炭—二叠纪海陆过渡相与湖相烃源岩中发育多层火山灰夹层，高精度定年厘定了三期主要烃源岩发育时段，并揭示了由西北向东逐渐变年轻的海陆转换穿时性，为古亚洲洋“剪刀式”闭合提供关键年代约束。",
+        paper: "Hou et al., 2026 (Science China Earth Sciences 69: 288–312)"
+      },
+      {
+        id: "south-china-1",
+        region: "south-china",
+        isSample: true,
+        featured: false,
+        src: "images/south_china.jpg",
+        titleEn: "South China Marine Carbonate Sections",
+        titleZh: "华南板块海相碳酸盐岩剖面",
+        metaEn: "Silurian & Permian · Cisuralian–Lopingian & Xiushan–Huixingshao Fms.",
+        metaZh: "志留纪与二叠纪 · 船山统—乐平统及秀山组—廻星哨组",
+        descEn: "Continuous carbonate platforms and siliceous basins across South China preserve the base-Wuchiapingian GSSP/SABS, Cisuralian sea-level records tied to the Artinskian Warming Event, and Silurian tuffs recalibrating the Yangtze uplift and Chongqing Lagerstätte.",
+        descZh: "华南连续发育的海相碳酸盐岩与硅质盆地剖面保存了吴家坪阶底界“金钉子”及辅助剖面、响应亚丁斯克期增温事件的早二叠世海平面变化记录，以及重新标定扬子上升与重庆特异埋藏生物群时代的志留纪凝灰岩。",
+        paper: "Hou et al., 2026 (GSA Bulletin); Hou et al., 2023, 2020 (Palaeo3)"
+      },
+      {
+        id: "north-china-1",
+        region: "north-china",
+        isSample: true,
+        featured: false,
+        src: "images/north_china.jpg",
+        titleEn: "North China Coal-Bearing Strata",
+        titleZh: "华北板块含煤地层剖面",
+        metaEn: "Carboniferous–Permian · Taiyuan, Shanxi & Shihhotse Fms.",
+        metaZh: "石炭—二叠纪 · 太原组、山西组与石盒子组",
+        descEn: "Marine-to-terrestrial coal-bearing successions of the North China Block record Cathaysian floral turnovers, icehouse-to-greenhouse paleoclimate transitions, and a major Middle–Late Permian hiatus resolved by CA-ID-TIMS U–Pb geochronology.",
+        descZh: "华北板块石炭—二叠纪海陆交互相及陆相含煤地层完整记录了华夏植物群更替、晚古生代冰室向温室的气候转变，以及高精度 U–Pb 定年揭示的重大中—晚二叠世沉积间断。",
+        paper: "Shen, Hou et al., 2024 (Palaeo3); Wu et al., 2021 (Geology)"
+      },
+      {
+        id: "tibet-1",
+        region: "tibet",
+        isSample: true,
+        featured: false,
+        src: "images/tibet.jpg",
+        titleEn: "Qinghai-Tibetan Plateau Permian Successions",
+        titleZh: "青藏高原二叠纪地层剖面",
+        metaEn: "Permian · Raggyorcaka & Qamdo Areas, Eastern Tethys",
+        metaZh: "二叠纪 · 热觉茶卡与昌都地区（东特提斯域）",
+        descEn: "High-altitude Permian strata across the Qiangtang and surrounding terranes integrate fusuline/foraminiferal biostratigraphy and radiometric constraints to reconstruct Tethyan–Cimmerian paleogeography and paleoclimate evolution.",
+        descZh: "青藏高原羌塘及周边地块的高海拔二叠系剖面综合了有孔虫/牙形类生物地层与年代学约束，重建了特提斯—辛梅里亚域的二叠纪古地理与古气候演化格局。",
+        paper: "Shen et al., 2024 (Sci. China Earth Sci.); Qiao et al., 2021 (Palaeo3)"
+      }
+    ];
+
+    const PUBLICATIONS = [
+      {
+        id: 1, year: 2026, role: "second", topic: "geochronology", lang: "en",
+        authors: "Wu, Q., Hou, Z.-S., Ramezani, J., Yuan, D.-X., Zhang, H., Wang, W.-Q., Zheng, Q.-F., Zhang, Y.-C., Zhang, F.-F., Wei, G.-Y., Zhang, S.-H., Wang, Y., Erwin, D.H., Xu, Y.-G., Shen, S.-Z.",
+        title: "Why the end-Guadalupian biotic crisis differs from mass extinctions: Insights from high-precision geochronology and carbon cycle modeling",
+        journal: "Earth and Planetary Science Letters", detail: "679, 119898",
+        url: "https://doi.org/10.1016/j.epsl.2026.119898"
+      },
+      {
+        id: 2, year: 2026, role: "first", topic: "geochronology", lang: "en",
+        authors: "Hou, Z.-S., Wu, Q., Ramezani, J., Li, P., Chen, Y., Zhu, M., Shen, S.-Z.",
+        title: "High-precision U-Pb geochronology recalibrates the Silurian Yangtze uplift and early gnathostome radiation in South China",
+        journal: "GSA Bulletin", detail: "138(9–10), 4112",
+        url: "https://doi.org/10.1130/B38662.1"
+      },
+      {
+        id: 3, year: 2026, role: "first", topic: "geochronology", lang: "en",
+        authors: "Hou, Z., Wang, X., Zhi, D., Tang, Y., Wu, Q., Zhang, H., Cao, J., Xiao, D., Fu, G., Zheng, M., Qi, X., Cai, Y., Feng, Z., Zhang, B., Zhou, C., Li, Y., Ye, X., Huang, X., Zhang, S., Shen, B., Ramezani, J., Zhang, S., Shen, S.",
+        title: "High-resolution chronostratigraphic framework and spatiotemporal evolution of Carboniferous-Permian source rocks in the Junggar Basin and its periphery",
+        journal: "Science China Earth Sciences", detail: "69(1), 288–312",
+        url: "https://doi.org/10.1007/s11430-025-1748-3"
+      },
+      {
+        id: 5, year: 2026, role: "first", topic: "geochronology", lang: "zh",
+        authors: "侯章帅, 王向东, 支东明, 唐勇, 吴琼, 张华, 曹剑, 肖冬生, 付国斌, 郑孟林, 齐雪峰, 蔡垚峰, 冯卓, 张斌, 周川闽, 李莹, 叶训焱, 黄兴, 张书涵, 申博恒, Ramezani, J., 张水昌, 沈树忠",
+        title: "准噶尔盆地及周缘石炭-二叠纪烃源岩高精度年代地层格架与时空演化",
+        journal: "中国科学: 地球科学", detail: "56(1), 304–328",
+        url: "https://doi.org/10.1360/SSTe-2025-0260"
+      },
+      {
+        id: 6, year: 2025, role: "coauthor", topic: "stratigraphy", lang: "en",
+        authors: "Hou, J.-B., Wang, X.-D., Hou, Z.-S., Ramezani, J., Tang, Q., Shen, S.-Z.",
+        title: "The terminal Ediacaran Tongshan Lagerstätte from South China",
+        journal: "Nature Communications", detail: "16(1), 10161",
+        url: "https://doi.org/10.1038/s41467-025-65176-2"
+      },
+      {
+        id: 10, year: 2024, role: "second", topic: "paleogeography", lang: "en",
+        authors: "Shen, B.-H., Hou, Z.-S., Wang, X.-D., Wu, Q., Zhang, H., Chen, J., Yuan, D.-X., Hu, B., Sun, B.-L., Shen, S.-Z.",
+        title: "Quantitative palaeogeographical reconstruction of the North China Block during the Carboniferous and Permian transition: Implications for coal accumulation and source rock development",
+        journal: "Palaeogeography, Palaeoclimatology, Palaeoecology", detail: "640, 112102",
+        url: "https://doi.org/10.1016/j.palaeo.2024.112102"
+      },
+      {
+        id: 9, year: 2024, role: "coauthor", topic: "stratigraphy", lang: "en",
+        authors: "Shen, S., Zhang, Y., Yuan, D., Xu, H., Ju, Q., Zhang, H., Zheng, Q., Luo, M., Hou, Z.",
+        title: "Permian integrative stratigraphy, biotas, paleogeographical and paleoclimatic evolution of the Qinghai-Tibetan Plateau and its surrounding areas",
+        journal: "Science China Earth Sciences", detail: "67(4), 1107–1151",
+        url: "https://doi.org/10.1007/s11430-023-1126-3"
+      },
+      {
+        id: 8, year: 2024, role: "coauthor", topic: "stratigraphy", lang: "en",
+        authors: "Shen, S.-Z., Yuan, D.-X., Zhang, Y.-C., Henderson, C.M., Zheng, Q.-F., Zhang, H., Zhang, M., Dai, Y., Xu, H.-P., Wang, W.-Q., Li, Q., Wang, Y., Wang, X.-D., Mu, L., Ramezani, J., Erwin, D.H., Angiolini, L., Zhang, F.-F., Hou, Z.-S., Chen, J., Zhang, X.-Y., Zhang, S.-H., Wu, Q., Pan, Y.-X., Stephenson, M.H., Mei, S.-L.",
+        title: "Redefinition of the Global Stratotype Section and Point (GSSP) and new Standard Auxiliary Boundary Stratotype (SABS) for the base of Wuchiapingian Stage (Lopingian Series, Permian) in South China",
+        journal: "Episodes", detail: "47(1), 147–177",
+        url: ""
+      },
+      {
+        id: 7, year: 2024, role: "coauthor", topic: "stratigraphy", lang: "en",
+        authors: "Yang, S.-R., Yao, L., Hou, Z.-S., Ye, X.-Y., Li, Y., Huang, X., Shen, S.-Z., Wang, X.-D.",
+        title: "A Pennsylvanian rugose coral assemblage from eastern Junggar Basin, Northwest China",
+        journal: "Palaeoworld", detail: "33, 650–663",
+        url: "https://doi.org/10.1016/j.palwor.2022.12.009"
+      },
+      {
+        id: 11, year: 2024, role: "coauthor", topic: "knowledge-graph", lang: "en",
+        authors: "Deng, Y., Song, S., Fan, J., Luo, M., Yao, L., Dong, S., Shi, Y., Zhang, L., Wang, Y., Xu, H., Xu, H., Zhao, Y., Pan, Z., Hou, Z., Li, X., Shen, B., Chen, X., Zhang, S., Wu, X., Xing, L., Liang, Q., Wang, E.",
+        title: "Paleontology Knowledge Graph for Data-Driven Discovery",
+        journal: "Journal of Earth Science", detail: "35(3), 1024–1034",
+        url: ""
+      },
+      {
+        id: 12, year: 2024, role: "coauthor", topic: "stratigraphy", lang: "zh",
+        authors: "袁东勋, 张华, 郑全峰, 李乾, 张以春, 侯章帅, 戴昱, 沈树忠",
+        title: "二叠系乐平统底界新“金钉子”剖面牙形类序列",
+        journal: "地质学报", detail: "98(10), 3002–3016",
+        url: ""
+      },
+      {
+        id: 13, year: 2024, role: "coauthor", topic: "stratigraphy", lang: "zh",
+        authors: "罗冰, 张玺华, 陈延贵, 袁东勋, 王向东, 史宇坤, 马鑫怡, 王文琦, 侯章帅, 陈吉涛, 沈树忠",
+        title: "四川盆地南缘的二叠系及生物群",
+        journal: "地层学杂志", detail: "48(3), 318–328",
+        url: ""
+      },
+      {
+        id: 14, year: 2024, role: "coauthor", topic: "stratigraphy", lang: "zh",
+        authors: "沈树忠, 张以春, 袁东勋, 徐海鹏, 琚琦, 张华, 郑全锋, 罗茂, 侯章帅",
+        title: "青藏高原及其周边二叠纪综合地层、生物群以及古地理和古气候演化",
+        journal: "中国科学: 地球科学", detail: "54(4), 1125–1170",
+        url: ""
+      },
+      {
+        id: 17, year: 2023, role: "first", topic: "paleogeography", lang: "en",
+        authors: "Hou, Z.-S., Shen, S.-Z., Henderson, C.M., Yuan, D.-X., Zhang, Y.-C., Fan, J.-X.",
+        title: "Cisuralian (Early Permian) paleogeographic evolution of South China Block and sea-level changes: Implications for the global Artinskian Warming Event",
+        journal: "Palaeogeography, Palaeoclimatology, Palaeoecology", detail: "613, 111395",
+        url: "https://doi.org/10.1016/j.palaeo.2023.111395"
+      },
+      {
+        id: 15, year: 2023, role: "second", topic: "knowledge-graph", lang: "en",
+        authors: "Zhang, L., Hou, Z., Shen, B., Chen, Q., Dong, S., Fan, J.",
+        title: "Paleobiogeographic knowledge graph: an ongoing work with fundamental support for future research",
+        journal: "Journal of Earth Science", detail: "34(5), 1339–1349",
+        url: ""
+      },
+      {
+        id: 16, year: 2023, role: "coauthor", topic: "stratigraphy", lang: "en",
+        authors: "Tang, Y., Ye, X., Wang, X., Huang, X., Hou, Z., Hu, K., Yang, S., Li, Y., Zhang, F., Shen, S., Wang, X.",
+        title: "A synthesis of Carboniferous stratigraphy in Xinjiang, Northwest China with emphasis on regional and global correlations",
+        journal: "Journal of Asian Earth Sciences", detail: "241, 105476",
+        url: "https://doi.org/10.1016/j.jseaes.2022.105476"
+      },
+      {
+        id: 18, year: 2023, role: "coauthor", topic: "stratigraphy", lang: "en",
+        authors: "Deng, Y., Fan, J., Yang, S., Shi, Y., Lu, Z., Xu, H., Sun, Z., Zhao, F., Hou, Z.",
+        title: "No Furongian Biodiversity Gap: Evidence from South China",
+        journal: "Palaeogeography, Palaeoclimatology, Palaeoecology", detail: "618, 111492",
+        url: "https://doi.org/10.1016/j.palaeo.2023.111492"
+      },
+      {
+        id: 20, year: 2022, role: "second", topic: "geochronology", lang: "zh",
+        authors: "唐勇, 侯章帅, 王霞田, 王韬, 吴琼, 申博恒, 王文倩, 张华, 曹剑, 张水昌, 张斌, 王向东, 沈树忠",
+        title: "准噶尔盆地石炭纪-二叠纪地层对比框架新进展",
+        journal: "地质论评", detail: "68(2), 385–407",
+        url: ""
+      },
+      {
+        id: 19, year: 2022, role: "coauthor", topic: "geochronology", lang: "en",
+        authors: "Shen, B., Shen, S., Wu, Q., Zhang, S., Zhang, B., Wang, X., Hou, Z., Yuan, D., Zhang, Y., Liu, F., et al.",
+        title: "Carboniferous and Permian integrative stratigraphy and timescale of North China Block",
+        journal: "Science China Earth Sciences", detail: "65(6), 983–1011",
+        url: ""
+      },
+      {
+        id: 21, year: 2022, role: "coauthor", topic: "geochronology", lang: "zh",
+        authors: "申博恒, 沈树忠, 吴琼, 张水昌, 张斌, 王向东, 侯章帅, 袁东勋, 张以春, 刘锋, 刘俊, 张华, 史宇坤, 王军, 冯卓",
+        title: "华北板块石炭纪-二叠纪地层时间框架",
+        journal: "中国科学: 地球科学", detail: "52(7), 1181–1212",
+        url: "https://doi.org/10.1360/SSTe-2021-0312"
+      },
+      {
+        id: 23, year: 2021, role: "coauthor", topic: "geochronology", lang: "en",
+        authors: "Wu, Q., Ramezani, J., Zhang, H., Wang, J., Zeng, F., Zhang, Y., Liu, F., Chen, J., Cai, Y., Hou, Z., Liu, C., Henderson, C.M., Shen, S.-Z.",
+        title: "High-precision U-Pb age constraints on the Permian floral turnovers, paleoclimate change, and tectonics of the North China block",
+        journal: "Geology", detail: "49(6), 677–681",
+        url: "https://pubs.geoscienceworld.org/gsa/geology/article/49/6/677/594558/High-precision-U-Pb-age-constraints-on-the-Permian"
+      },
+      {
+        id: 24, year: 2021, role: "coauthor", topic: "paleogeography", lang: "en",
+        authors: "Qiao, F., Zhang, Y.-C., Wang, Y., Yuan, D.-X., Ju, Q., Xu, H.-P., Zhang, H., Zheng, Q.-F., Cai, Y.-F., Hou, Z.-S., Shen, S.-Z.",
+        title: "An updated age of Permian strata in the Raggyorcaka and Qamdo areas, Tibet and their paleogeographic implications",
+        journal: "Palaeogeography, Palaeoclimatology, Palaeoecology", detail: "582, 110660",
+        url: "https://doi.org/10.1016/j.palaeo.2021.110660"
+      },
+      {
+        id: 22, year: 2021, role: "coauthor", topic: "geochronology", lang: "en",
+        authors: "Wu, Q., Ramezani, J., Zhang, H., Wang, J., Zeng, F.-G., Zhang, Y.-C., Liu, F., Chen, J., Cai, Y.-F., Hou, Z.-S., Liu, C., Yang, W., Henderson, C.M., Shen, S.-Z.",
+        title: "Recent progress and prospect of high-precision U-Pb age constraints on the Permian marine-terrestrial system of the North China block",
+        journal: "Permophiles", detail: "71, 32–36",
+        url: ""
+      },
+      {
+        id: 25, year: 2021, role: "coauthor", topic: "stratigraphy", lang: "zh",
+        authors: "申博恒, 沈树忠, 侯章帅, 吴琼, 张水昌, 张斌, 张以春, 袁东勋",
+        title: "中国二叠纪岩石地层划分和对比",
+        journal: "地层学杂志", detail: "45(3), 319–339",
+        url: ""
+      },
+      {
+        id: 27, year: 2020, role: "first", topic: "paleogeography", lang: "en",
+        authors: "Hou, Z.S., Fan, J.X., Henderson, C.M., Yuan, D.X., Shen, B.H., Wu, J., Wang, Y., Zheng, Q.F., Zhang, Y.C., Wu, Q., Shen, S.Z.",
+        title: "Dynamic palaeogeographic reconstructions of the Wuchiapingian Stage (Lopingian, Late Permian) for the South China Block",
+        journal: "Palaeogeography, Palaeoclimatology, Palaeoecology", detail: "546, 109667",
+        url: ""
+      },
+      {
+        id: 28, year: 2020, role: "first", topic: "paleogeography", lang: "zh",
+        authors: "侯章帅, 樊隽轩, 张琳娜, 沈树忠",
+        title: "全球古地理重建模型的构建方法、比较与知识发现",
+        journal: "高校地质学报", detail: "26(1), 86–99",
+        url: ""
+      },
+      {
+        id: 26, year: 2020, role: "coauthor", topic: "stratigraphy", lang: "en",
+        authors: "Shen, S.Z., Zhang, Y.C., Yuan, D.X., Zheng, Q.F., Zhang, H., Mu, L., Hou, Z.S., Wang, W.Q., Shen, B.H., Cai, Y.F.",
+        title: "Progress report: location of the replacement section for the base-Lopingian GSSP",
+        journal: "Permophiles", detail: "68, 24–28",
+        url: ""
+      },
+      {
+        id: 29, year: 2019, role: "coauthor", topic: "stratigraphy", lang: "en",
+        authors: "Zhang, Y.C., Chen, J.T., Zhang, H., Liu, F., Zheng, Q.F., Luo, M., Yuan, D.X., Yao, L., Xu, H.P., Hou, Z.S., Shen, S.Z., Qasim, M., Zeb, A.A.",
+        title: "Report of the Chinese-Pakistan working group: The Permian-Triassic boundary sections of the Salt Range",
+        journal: "Permophiles", detail: "67, 36–39",
+        url: ""
+      }
+    ];
+
+    const state = {
+      lang: "en",
+      galleryFilter: "all",
+      galleryItems: [...GALLERY_ITEMS],
+      lightboxList: [],
+      lightboxIdx: 0,
+      pubRole: "all",
+      pubTopic: "all",
+      pubLang: "all",
+      pubQuery: ""
+    };
+
+    let pubChartInstance = null;
+
+    function showToast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.classList.remove("hidden");
+      clearTimeout(el._timer);
+      el._timer = setTimeout(() => el.classList.add("hidden"), 2400);
+    }
+
+    function copyText(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast(I18N[state.lang].copiedToast);
+        }).catch(() => fallbackCopy(text));
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      showToast(I18N[state.lang].copiedToast);
+    }
+
+    function applyLanguage() {
+      const dict = I18N[state.lang];
+      document.documentElement.lang = state.lang === "zh" ? "zh-CN" : "en";
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key]) el.textContent = dict[key];
+      });
+      const searchInput = document.getElementById("pubSearchInput");
+      if (searchInput) searchInput.placeholder = dict.searchPlaceholder;
+
+      const enBtn = document.getElementById("langEnBtn");
+      const zhBtn = document.getElementById("langZhBtn");
+      if (state.lang === "en") {
+        enBtn.className = "px-2.5 py-1 rounded-full transition-colors bg-[#1C2321] text-[#FAF8F4]";
+        zhBtn.className = "px-2.5 py-1 rounded-full transition-colors text-[#525B58] hover:text-[#1C2321]";
+      } else {
+        zhBtn.className = "px-2.5 py-1 rounded-full transition-colors bg-[#1C2321] text-[#FAF8F4]";
+        enBtn.className = "px-2.5 py-1 rounded-full transition-colors text-[#525B58] hover:text-[#1C2321]";
+      }
+      renderGallery();
+      renderPublications();
+    }
+
+    function renderGallery() {
+      const grid = document.getElementById("galleryGrid");
+      const dict = I18N[state.lang];
+      const filtered = state.galleryItems.filter(item => {
+        if (state.galleryFilter === "all") return true;
+        if (state.galleryFilter === "custom") return !item.isSample;
+        return item.region === state.galleryFilter;
+      });
+      state.lightboxList = filtered;
+
+      const customCount = state.galleryItems.filter(i => !i.isSample).length;
+      const customBtn = document.getElementById("customFilterBtn");
+      if (customCount > 0) customBtn.classList.remove("hidden");
+
+      grid.innerHTML = filtered.map((item, idx) => {
+        const title = state.lang === "zh" ? item.titleZh : item.titleEn;
+        const meta = state.lang === "zh" ? item.metaZh : item.metaEn;
+        const desc = state.lang === "zh" ? item.descZh : item.descEn;
+        const badge = item.isSample ? dict.sampleBadge : dict.customBadge;
+        const spanClass = (idx === 0 && filtered.length > 1) ? "md:col-span-12 lg:col-span-8" : "md:col-span-6 lg:col-span-4";
+        const heightClass = (idx === 0 && filtered.length > 1) ? "h-72 sm:h-96" : "h-64 sm:h-72";
+
+        return `
+          <article class="gallery-card ${spanClass} group relative rounded-xl overflow-hidden border border-[#DDD6C8] bg-[#1C2321] cursor-pointer shadow-sm" data-lb-idx="${idx}">
+            <div class="${heightClass} w-full overflow-hidden">
+              <img src="${item.src}" alt="${title}" class="w-full h-full object-cover" />
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#141918]/92 via-[#141918]/30 to-transparent"></div>
+            <div class="absolute top-3 left-3 flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono-geo uppercase tracking-wider ${item.isSample ? "bg-[#1C2321]/75 text-[#E8C5A5] border border-white/15" : "bg-[#B85D3B] text-white"}">${badge}</span>
+            </div>
+            <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/45 text-white flex items-center justify-center opacity-80 group-hover:opacity-100 group-hover:bg-[#B85D3B] transition-colors">
+              <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+            </div>
+            <div class="absolute bottom-0 inset-x-0 p-5 text-[#FAF8F4]">
+              <p class="font-mono-geo text-[11px] text-[#E8C5A5] mb-1 truncate">${meta}</p>
+              <h3 class="font-editorial text-lg sm:text-xl font-bold leading-snug">${title}</h3>
+              <p class="mt-1.5 text-xs text-[#D5CFC3] line-clamp-2">${desc}</p>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      grid.querySelectorAll("[data-lb-idx]").forEach(card => {
+        card.addEventListener("click", () => {
+          openLightbox(parseInt(card.getAttribute("data-lb-idx"), 10));
+        });
+      });
+      lucide.createIcons();
+    }
+
+    function openLightbox(idx) {
+      if (!state.lightboxList.length) return;
+      state.lightboxIdx = (idx + state.lightboxList.length) % state.lightboxList.length;
+      const item = state.lightboxList[state.lightboxIdx];
+      const dict = I18N[state.lang];
+      document.getElementById("lightboxImg").src = item.src;
+      document.getElementById("lightboxImg").alt = state.lang === "zh" ? item.titleZh : item.titleEn;
+      document.getElementById("lightboxBadge").textContent = item.isSample ? dict.sampleBadge : dict.customBadge;
+      document.getElementById("lightboxTitle").textContent = state.lang === "zh" ? item.titleZh : item.titleEn;
+      document.getElementById("lightboxMeta").textContent = state.lang === "zh" ? item.metaZh : item.metaEn;
+      document.getElementById("lightboxDesc").textContent = state.lang === "zh" ? item.descZh : item.descEn;
+      const paperWrap = document.getElementById("lightboxPaperWrap");
+      paperWrap.innerHTML = item.paper
+        ? `<span class="font-mono-geo text-[11px] uppercase tracking-wider text-[#E8C5A5]">${state.lang === "zh" ? "相关文献：" : "Related Publication: "}</span>${item.paper}`
+        : "";
+      document.getElementById("lightboxModal").classList.remove("hidden");
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightboxModal").classList.add("hidden");
+    }
+
+    function highlightAuthor(authorsStr) {
+      return authorsStr
+        .replace(/(Hou,\s*Z\.?-?S\.?|Hou,\s*Z\.)/g, '<strong class="text-[#1C2321] font-semibold underline decoration-[#B85D3B]/50 underline-offset-2">$1</strong>')
+        .replace(/(侯章帅)/g, '<strong class="text-[#1C2321] font-semibold underline decoration-[#B85D3B]/50 underline-offset-2">$1</strong>');
+    }
+
+    function renderPublications() {
+      const listEl = document.getElementById("pubList");
+      const countEl = document.getElementById("pubCountLabel");
+      const dict = I18N[state.lang];
+      const q = state.pubQuery.trim().toLowerCase();
+
+      const filtered = PUBLICATIONS.filter(p => {
+        if (state.pubRole !== "all" && p.role !== state.pubRole) return false;
+        if (state.pubTopic !== "all" && p.topic !== state.pubTopic) return false;
+        if (state.pubLang !== "all" && p.lang !== state.pubLang) return false;
+        if (q) {
+          const hay = `${p.title} ${p.authors} ${p.journal} ${p.year} ${p.detail}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      countEl.textContent = state.lang === "zh"
+        ? `显示 ${filtered.length} / ${PUBLICATIONS.length} 篇`
+        : `Showing ${filtered.length} of ${PUBLICATIONS.length}`;
+
+      if (!filtered.length) {
+        listEl.innerHTML = `<div class="bg-[#FAF8F4] border border-[#DDD6C8] rounded-xl p-8 text-center text-sm text-[#525B58]">${state.lang === "zh" ? "未找到匹配的论文，请调整筛选条件。" : "No matching publications found. Try adjusting your filters."}</div>`;
+        return;
+      }
+
+      const roleBadgeMap = {
+        first: { en: "1st Author", zh: "第一作者", cls: "bg-[#B85D3B]/12 text-[#B85D3B] border-[#B85D3B]/25" },
+        second: { en: "2nd Author", zh: "第二作者", cls: "bg-[#2D5A5E]/12 text-[#2D5A5E] border-[#2D5A5E]/25" },
+        coauthor: { en: "Co-author", zh: "合作作者", cls: "bg-[#1C2321]/6 text-[#525B58] border-[#DDD6C8]" }
+      };
+
+      listEl.innerHTML = filtered.map(p => {
+        const rb = roleBadgeMap[p.role];
+        const citeText = `${p.authors} (${p.year}). ${p.title}. ${p.journal}, ${p.detail}.${p.url ? " " + p.url : ""}`;
+        return `
+          <article class="bg-[#FAF8F4] border border-[#DDD6C8] rounded-xl p-4 sm:p-5 hover:border-[#2D5A5E]/50 transition-colors">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="font-mono-geo text-xs font-bold text-[#1C2321]">${p.year}</span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-medium border ${rb.cls}">${state.lang === "zh" ? rb.zh : rb.en}</span>
+                <span class="text-xs font-medium text-[#2D5A5E] italic">${p.journal}</span>
+                <span class="font-mono-geo text-xs text-[#525B58]">${p.detail}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs font-mono-geo text-[#B85D3B] hover:underline"><span>DOI / Link</span><i data-lucide="arrow-up-right" class="w-3 h-3"></i></a>` : ""}
+                <button type="button" class="copy-cite-btn inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded border border-[#DDD6C8] bg-[#F3EFE6] text-[#525B58] hover:text-[#1C2321] hover:border-[#1C2321] transition-colors" data-cite="${citeText.replace(/"/g, "&quot;")}">
+                  <i data-lucide="copy" class="w-3 h-3"></i>
+                  <span>${dict.copyCite}</span>
+                </button>
+              </div>
+            </div>
+            <h3 class="font-editorial text-base sm:text-[17px] font-bold text-[#1C2321] leading-snug mb-1.5">
+              ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener noreferrer" class="hover:text-[#B85D3B] transition-colors">${p.title}</a>` : p.title}
+            </h3>
+            <p class="text-xs sm:text-sm text-[#525B58] leading-relaxed">${highlightAuthor(p.authors)}</p>
+          </article>
+        `;
+      }).join("");
+
+      listEl.querySelectorAll(".copy-cite-btn").forEach(btn => {
+        btn.addEventListener("click", () => copyText(btn.getAttribute("data-cite")));
+      });
+      lucide.createIcons();
+    }
+
+    function initPubChart() {
+      const years = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
+      const counts = years.map(y => PUBLICATIONS.filter(p => p.year === y).length);
+      const ctx = document.getElementById("pubChart").getContext("2d");
+      if (pubChartInstance) pubChartInstance.destroy();
+      pubChartInstance = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: years,
+          datasets: [{
+            data: counts,
+            backgroundColor: years.map(y => y >= 2025 ? "#B85D3B" : "#2D5A5E"),
+            borderRadius: 4,
+            barPercentage: 0.65
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: "#1C2321",
+              displayColors: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 2, color: "#525B58", font: { size: 10 } },
+              grid: { color: "#E8E2D5" }
+            },
+            x: {
+              ticks: { color: "#525B58", font: { size: 10 } },
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Language toggles
+      document.getElementById("langEnBtn").addEventListener("click", () => {
+        state.lang = "en";
+        applyLanguage();
+      });
+      document.getElementById("langZhBtn").addEventListener("click", () => {
+        state.lang = "zh";
+        applyLanguage();
+      });
+
+      // Mobile menu
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      mobileMenuBtn.addEventListener("click", () => mobileMenu.classList.toggle("hidden"));
+      mobileMenu.querySelectorAll("a").forEach(a => {
+        a.addEventListener("click", () => mobileMenu.classList.add("hidden"));
+      });
+
+      // Portrait local preview upload
+      document.getElementById("portraitInput").addEventListener("change", (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const frame = document.getElementById("portraitFrame");
+          frame.innerHTML = `<img src="${ev.target.result}" alt="Zhangshuai Hou portrait" class="w-full h-full object-cover" />`;
+          showToast(I18N[state.lang].portraitUpdatedToast);
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // Gallery region filters
+      document.querySelectorAll(".gallery-filter-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.galleryFilter = btn.getAttribute("data-region");
+          document.querySelectorAll(".gallery-filter-btn").forEach(b => {
+            b.className = "gallery-filter-btn px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-[#FAF8F4] text-[#525B58] border border-[#DDD6C8] hover:border-[#1C2321] transition-colors";
+          });
+          btn.className = "gallery-filter-btn px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-[#1C2321] text-[#FAF8F4] transition-colors";
+          renderGallery();
+        });
+      });
+
+      // Lightbox controls
+      document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
+      document.getElementById("lightboxPrev").addEventListener("click", () => openLightbox(state.lightboxIdx - 1));
+      document.getElementById("lightboxNext").addEventListener("click", () => openLightbox(state.lightboxIdx + 1));
+      document.getElementById("lightboxModal").addEventListener("click", (e) => {
+        if (e.target.id === "lightboxModal") closeLightbox();
+      });
+      document.addEventListener("keydown", (e) => {
+        const lb = document.getElementById("lightboxModal");
+        if (lb.classList.contains("hidden")) return;
+        if (e.key === "Escape") closeLightbox();
+        if (e.key === "ArrowLeft") openLightbox(state.lightboxIdx - 1);
+        if (e.key === "ArrowRight") openLightbox(state.lightboxIdx + 1);
+      });
+
+      // Add Field Photo modal
+      const uploadModal = document.getElementById("uploadModal");
+      document.getElementById("openUploadModalBtn").addEventListener("click", () => uploadModal.classList.remove("hidden"));
+      document.getElementById("closeUploadModalBtn").addEventListener("click", () => uploadModal.classList.add("hidden"));
+      document.getElementById("cancelUploadBtn").addEventListener("click", () => uploadModal.classList.add("hidden"));
+      uploadModal.addEventListener("click", (e) => {
+        if (e.target.id === "uploadModal") uploadModal.classList.add("hidden");
+      });
+
+      document.getElementById("uploadForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const fileInput = document.getElementById("fieldPhotoInput");
+        const file = fileInput.files && fileInput.files[0];
+        if (!file) return;
+        const title = document.getElementById("fieldTitleInput").value.trim();
+        const region = document.getElementById("fieldRegionInput").value;
+        const strata = document.getElementById("fieldStrataInput").value.trim() || "Field Expedition";
+        const desc = document.getElementById("fieldDescInput").value.trim() || "Geological fieldwork locality.";
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          state.galleryItems.unshift({
+            id: "custom-" + Date.now(),
+            region,
+            isSample: false,
+            featured: true,
+            src: ev.target.result,
+            titleEn: title,
+            titleZh: title,
+            metaEn: strata,
+            metaZh: strata,
+            descEn: desc,
+            descZh: desc,
+            paper: ""
+          });
+          state.galleryFilter = "all";
+          uploadModal.classList.add("hidden");
+          e.target.reset();
+          renderGallery();
+          showToast(I18N[state.lang].photoAddedToast);
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // Publication filters
+      document.getElementById("pubSearchInput").addEventListener("input", (e) => {
+        state.pubQuery = e.target.value;
+        renderPublications();
+      });
+      document.getElementById("pubTopicSelect").addEventListener("change", (e) => {
+        state.pubTopic = e.target.value;
+        renderPublications();
+      });
+      document.getElementById("pubLangSelect").addEventListener("change", (e) => {
+        state.pubLang = e.target.value;
+        renderPublications();
+      });
+      document.querySelectorAll(".role-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.pubRole = btn.getAttribute("data-role");
+          document.querySelectorAll(".role-btn").forEach(b => {
+            b.className = "role-btn px-3 py-1 rounded-full text-xs font-medium bg-[#F3EFE6] text-[#525B58] border border-[#DDD6C8] hover:border-[#1C2321]";
+          });
+          btn.className = "role-btn px-3 py-1 rounded-full text-xs font-medium bg-[#1C2321] text-[#FAF8F4]";
+          renderPublications();
+        });
+      });
+
+      // Contact copy triggers
+      document.querySelectorAll(".copy-trigger").forEach(btn => {
+        btn.addEventListener("click", () => copyText(btn.getAttribute("data-copy")));
+      });
+
+      const PORTRAIT_URL = "";
+      if (PORTRAIT_URL) {
+        const frame = document.getElementById("portraitFrame");
+        frame.innerHTML = `<img src="${PORTRAIT_URL}" alt="Zhangshuai Hou portrait" class="w-full h-full object-cover" />`;
+      }
+
+      async function loadRepoData() {
+        try {
+          const mResp = await fetch("data/metrics.json", { cache: "no-store" });
+          if (mResp.ok) {
+            const m = await mResp.json();
+            if (m.publications) document.getElementById("metricPubsVal").textContent = m.publications;
+            if (m.citations) document.getElementById("metricCitesVal").textContent = m.citations;
+            if (m.h_index) document.getElementById("metricHVal").textContent = m.h_index;
+            if (m.i10_index) document.getElementById("metricI10Val").textContent = m.i10_index;
+          }
+        } catch (e) {}
+        try {
+          const gResp = await fetch("data/gallery.json", { cache: "no-store" });
+          if (gResp.ok) {
+            const g = await gResp.json();
+            if (Array.isArray(g) && g.length) {
+              state.galleryItems = g;
+              renderGallery();
+            }
+          }
+        } catch (e) {}
+      }
+
+      async function syncOpenAlexMetrics(manual) {
+        const btn = document.getElementById("syncMetricsBtn");
+        if (btn) btn.classList.add("animate-spin");
+        try {
+          const resp = await fetch("https://api.openalex.org/authors/orcid:0009-0009-1897-5811");
+          if (!resp.ok) throw new Error("OpenAlex unavailable");
+          const data = await resp.json();
+          const cites = data.cited_by_count;
+          const h = data.summary_stats && data.summary_stats.h_index;
+          const i10 = data.summary_stats && data.summary_stats.i10_index;
+          const curCites = parseInt(document.getElementById("metricCitesVal").textContent, 10) || 0;
+          if (typeof cites === "number" && cites > curCites) {
+            document.getElementById("metricCitesVal").textContent = cites;
+            if (typeof h === "number" && h > 0) document.getElementById("metricHVal").textContent = h;
+            if (typeof i10 === "number" && i10 > 0) document.getElementById("metricI10Val").textContent = i10;
+            if (manual) showToast(state.lang === "zh" ? "已从 OpenAlex 同步最新指标" : "Synced live metrics from OpenAlex");
+          } else if (manual) {
+            showToast(state.lang === "zh" ? `OpenAlex 已连接（当前保留更完整的 Google 学术指标：${curCites} 次引用）` : `OpenAlex connected (keeping fuller Google Scholar baseline: ${curCites} citations)`);
+          }
+        } catch (e) {
+          if (manual) showToast(state.lang === "zh" ? "暂时无法连接 OpenAlex，当前显示已验证指标" : "Could not reach OpenAlex right now; showing verified metrics");
+        } finally {
+          if (btn) btn.classList.remove("animate-spin");
+        }
+      }
+
+      document.getElementById("syncMetricsBtn").addEventListener("click", () => syncOpenAlexMetrics(true));
+
+      applyLanguage();
+      initPubChart();
+      lucide.createIcons();
+      loadRepoData();
+    });
+  </script>
+</body>
+</html>

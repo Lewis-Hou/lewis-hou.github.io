@@ -1,0 +1,58 @@
+[
+  {
+    "id": "junggar-1",
+    "region": "junggar",
+    "isSample": true,
+    "featured": true,
+    "src": "images/junggar.jpg",
+    "titleEn": "Junggar Basin & Northern Xinjiang",
+    "titleZh": "新疆准噶尔盆地及周缘",
+    "metaEn": "Kasimovian – Wuchiapingian · Fengcheng, Lucaogou & Pingdiquan Fms.",
+    "metaZh": "卡西莫夫期—吴家坪期 · 风城组、芦草沟组与平地泉组",
+    "descEn": "Volcanic ash beds interbedded with late Carboniferous–Permian lacustrine and marine-terrestrial strata anchor three major source-rock intervals and reveal a northwest-to-east diachronous marine-to-terrestrial transition supporting the 'scissor-like' closure of the Paleo-Asian Ocean.",
+    "descZh": "北疆石炭—二叠纪海陆过渡相与湖相烃源岩中发育多层火山灰夹层，高精度定年厘定了三期主要烃源岩发育时段，并揭示了由西北向东逐渐变年轻的海陆转换穿时性，为古亚洲洋“剪刀式”闭合提供关键年代约束。",
+    "paper": "Hou et al., 2026 (Science China Earth Sciences 69: 288–312)"
+  },
+  {
+    "id": "south-china-1",
+    "region": "south-china",
+    "isSample": true,
+    "featured": false,
+    "src": "images/south_china.jpg",
+    "titleEn": "South China Marine Carbonate Sections",
+    "titleZh": "华南板块海相碳酸盐岩剖面",
+    "metaEn": "Silurian & Permian · Cisuralian–Lopingian & Xiushan–Huixingshao Fms.",
+    "metaZh": "志留纪与二叠纪 · 船山统—乐平统及秀山组—廻星哨组",
+    "descEn": "Continuous carbonate platforms and siliceous basins across South China preserve the base-Wuchiapingian GSSP/SABS, Cisuralian sea-level records tied to the Artinskian Warming Event, and Silurian tuffs recalibrating the Yangtze uplift and Chongqing Lagerstätte.",
+    "descZh": "华南连续发育的海相碳酸盐岩与硅质盆地剖面保存了吴家坪阶底界“金钉子”及辅助剖面、响应亚丁斯克期增温事件的早二叠世海平面变化记录，以及重新标定扬子上升与重庆特异埋藏生物群时代的志留纪凝灰岩。",
+    "paper": "Hou et al., 2026 (GSA Bulletin); Hou et al., 2023, 2020 (Palaeo3)"
+  },
+  {
+    "id": "north-china-1",
+    "region": "north-china",
+    "isSample": true,
+    "featured": false,
+    "src": "images/north_china.jpg",
+    "titleEn": "North China Coal-Bearing Strata",
+    "titleZh": "华北板块含煤地层剖面",
+    "metaEn": "Carboniferous–Permian · Taiyuan, Shanxi & Shihhotse Fms.",
+    "metaZh": "石炭—二叠纪 · 太原组、山西组与石盒子组",
+    "descEn": "Marine-to-terrestrial coal-bearing successions of the North China Block record Cathaysian floral turnovers, icehouse-to-greenhouse paleoclimate transitions, and a major Middle–Late Permian hiatus resolved by CA-ID-TIMS U–Pb geochronology.",
+    "descZh": "华北板块石炭—二叠纪海陆交互相及陆相含煤地层完整记录了华夏植物群更替、晚古生代冰室向温室的气候转变，以及高精度 U–Pb 定年揭示的重大中—晚二叠世沉积间断。",
+    "paper": "Shen, Hou et al., 2024 (Palaeo3); Wu et al., 2021 (Geology)"
+  },
+  {
+    "id": "tibet-1",
+    "region": "tibet",
+    "isSample": true,
+    "featured": false,
+    "src": "images/tibet.jpg",
+    "titleEn": "Qinghai-Tibetan Plateau Permian Successions",
+    "titleZh": "青藏高原二叠纪地层剖面",
+    "metaEn": "Permian · Raggyorcaka & Qamdo Areas, Eastern Tethys",
+    "metaZh": "二叠纪 · 热觉茶卡与昌都地区（东特提斯域）",
+    "descEn": "High-altitude Permian strata across the Qiangtang and surrounding terranes integrate fusuline/foraminiferal biostratigraphy and radiometric constraints to reconstruct Tethyan–Cimmerian paleogeography and paleoclimate evolution.",
+    "descZh": "青藏高原羌塘及周边地块的高海拔二叠系剖面综合了有孔虫/牙形类生物地层与年代学约束，重建了特提斯—辛梅里亚域的二叠纪古地理与古气候演化格局。",
+    "paper": "Shen et al., 2024 (Sci. China Earth Sci.); Qiao et al., 2021 (Palaeo3)"
+  }
+]
